@@ -65,25 +65,25 @@ const ProducerCard = () => {
                             </button>
                         </div>
                         :
-                        files.map(file => 
-                        <div key={file.name} className={`w-full py-2 flex items-center justify-between ${files.indexOf(file) > 0 ? "border-b-[1px]" : "border-y-[1px]"} border-[#6C6C89] border-dashed`}>
-                            <div className='flex items-center gap-1'>
-                                <Image
-                                    src="/quantumDrift.png"
-                                    alt="Quantum Drift"
-                                    width={24}
-                                    height={24}
-                                    priority
-                                />
-                                <p className='text-sm leading-5 font-bold'>{file.name}</p>
-                            </div>
+                        files.map(file =>
+                            <div key={file.name} className={`w-full py-2 flex items-center justify-between ${files.indexOf(file) > 0 ? "border-b-[1px]" : "border-y-[1px]"} border-[#6C6C89] border-dashed`}>
+                                <div className='flex items-center gap-1'>
+                                    <Image
+                                        src="/quantumDrift.png"
+                                        alt="Quantum Drift"
+                                        width={24}
+                                        height={24}
+                                        priority
+                                    />
+                                    <p className='text-sm leading-5 font-bold'>{file.name}</p>
+                                </div>
 
-                            <button disabled={filesSubmitted} onClick={() =>
-                                setFiles((prevFiles) => prevFiles.filter((f) => f.name !== file.name))
-                            } className='hover:cursor-pointer'>
-                                <X size={16} strokeWidth={3} />
-                            </button>
-                        </div>)
+                                <button disabled={filesSubmitted} onClick={() =>
+                                    setFiles((prevFiles) => prevFiles.filter((f) => f.name !== file.name))
+                                } className='hover:cursor-pointer'>
+                                    <X size={16} strokeWidth={3} />
+                                </button>
+                            </div>)
                 }
             </div>
 
@@ -98,7 +98,9 @@ const ProducerCard = () => {
             <div className={filesSubmitted ? "hidden" : "block"}>
                 <input
                     onClick={() => {
-                        files.length && setFilesSubmitted(true)
+                        if (files.length) {
+                            setFilesSubmitted(true);
+                        }
                     }}
                     disabled={filesSubmitted}
                     accept=".mp3,.wav"
