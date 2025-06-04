@@ -19,7 +19,7 @@ interface TracklistItemProps {
 }
 
 const TracklistItem: React.FC<TracklistItemProps> = ({ track }) => {
-    const [progress, setProgress] = useState(30)
+    const progress = 30
     const [isPlaying, setIsPlaying] = useState(false)
 
     return (

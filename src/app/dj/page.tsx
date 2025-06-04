@@ -1,11 +1,9 @@
-"use client"
-
 import Navbar from '@/components/navbar'
 import TracklistItem from '@/components/tracklist-item'
-import React, { useState } from 'react'
+import React from 'react'
 
 const Dj = () => {
-  const [trackList, setTrackList] = useState([{
+  const trackList = [{
     title: "Quantum Drift",
     artist: "Pens",
     categories: ["Bass", "130", "Dark, Groovy"],
@@ -19,7 +17,7 @@ const Dj = () => {
     thumbnail: "/track1.png",
     id: 2
   }
-  ])
+  ]
 
   return (
     <div className='w-full'>

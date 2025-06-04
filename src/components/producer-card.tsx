@@ -110,6 +110,8 @@ const ProducerCard = () => {
                 />
                 <label htmlFor='file-upload' className='hover:cursor-pointer w-fit bg-[#273AF4] mt-6 px-4 py-1 rounded-sm text-white font-bold text-xs leading-4'>{files.length ? "Submit" : "Add"} tracks</label>
             </div>
+
+            {error && <p className='text-xs text-red-500 font-medium mt-5'>{error}</p>}
         </div>
     )
 }

@@ -8,25 +8,12 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { useState } from "react";
 import Image from "next/image";
 import { CheckCheck } from "lucide-react";
 
-interface Track {
-    id: string | number;
-    title: string;
-    artist: string;
-    thumbnail: string;
-    categories: string[];
-}
-
-interface TracklistItemProps {
-    track: Track;
-}
 const FeedbackModal = (
-    // : FeedbackModalProps
 ) => {
-    const [messages, setMessages] = useState([
+    const messages = [
         {
             body: "Hi! I hope you're well! Would love you to check on thoses tracks for your next gigs <3 Any feedback is super appreciated <3",
             track: {
@@ -46,46 +33,7 @@ const FeedbackModal = (
             timestamp: "2025-06-03T16:00:00Z",
             read: true,
         },
-         {
-            body: "Hi! I hope you're well! Would love you to check on thoses tracks for your next gigs <3 Any feedback is super appreciated <3",
-            track: {
-                title: "Quantum Drift",
-                artist: "Pens",
-                categories: ["Bass", "130", "Dark, Groovy"],
-                thumbnail: "/quantumDrift.png",
-                id: 1
-            },
-            type: 'received',
-            timestamp: "2025-06-03T15:30:00Z",
-            read: true
-        },
-        {
-            body: "hey, thank for your message",
-            type: 'sent',
-            timestamp: "2025-06-03T16:00:00Z",
-            read: true,
-        },
-         {
-            body: "Hi! I hope you're well! Would love you to check on thoses tracks for your next gigs <3 Any feedback is super appreciated <3",
-            track: {
-                title: "Quantum Drift",
-                artist: "Pens",
-                categories: ["Bass", "130", "Dark, Groovy"],
-                thumbnail: "/quantumDrift.png",
-                id: 1
-            },
-            type: 'received',
-            timestamp: "2025-06-03T15:30:00Z",
-            read: true
-        },
-        {
-            body: "hey, thank for your message",
-            type: 'sent',
-            timestamp: "2025-06-03T16:00:00Z",
-            read: true,
-        },
-    ])
-    const [textValue, setTextValue] = useState("")
+    ]
 
     return (
         <Dialog>
@@ -97,12 +45,12 @@ const FeedbackModal = (
                     </button>
                 </DialogTrigger>
 
-                <DialogContent className="sm:max-w-[675px] h-full max-h-[585px] gap-0">
-                    <DialogHeader>
+                <DialogContent className="sm:max-w-[675px] h-fit max-h-[585px] gap-0 pb-4">
+                    <DialogHeader className="pb-6">
                         <DialogTitle className="text-2xl leading-8 font-semibold text-center">SEND FEEDBACK</DialogTitle>
                     </DialogHeader>
 
-                    <div className="flex items-center gap-2 border-y-[1px] border-[#F3F3F3] py-2 px-4">
+                    <div className="max-h-fit flex items-center gap-2 border-y-[1px] border-[#F3F3F3] py-2 px-4">
                         <Image
                             className="rounded-full bg-zinc-300"
                             src="/quantumDrift.png"
@@ -115,7 +63,7 @@ const FeedbackModal = (
                         <h2 className="font-bold leading-4">Pens</h2>
                     </div>
 
-                    <div className="flex flex-col gap-4 pt-4 max-h-[405px] overflow-y-scroll">
+                    <div className="flex flex-col gap-4 pt-4 pb-12 h-full max-h-[390px] overflow-y-scroll">
                         <p className="text-xs leading-4 font-bold text-[#6C6C89] text-center">Monday 16:00</p>
                         {messages.map((message, index) => (
                             <div key={index} className={`flex items-start gap-2 ${message.type === 'received' ? 'flex-row' : 'flex-row-reverse'}`}>
@@ -145,13 +93,9 @@ const FeedbackModal = (
                     </div>
 
                     <div className="flex items-center gap-4 pt-2 border-t-[1px] border-[#F3F3F3]">
-                        <Input placeholder="Write your feedback...." className="py-2 px-4 bg-[#F7F7F8]" onChange={(e) => {
-                            setTextValue(e.target.value)
-                        }} id="message" name="message" />
+                        <Input placeholder="Write your feedback...." className="py-2 px-4 bg-[#F7F7F8]" id="message" name="message" />
 
-                        <button onClick={() => {
-                           
-                        }} className="bg-[#273AF4] w-fit text-xs text-white leading-4 font-bold py-1 px-8 hover:cursor-pointer rounded-sm" type="submit">Send</button>
+                        <button className="bg-[#273AF4] w-fit text-xs text-white leading-4 font-bold py-1 px-8 hover:cursor-pointer rounded-sm" type="submit">Send</button>
                     </div>
                 </DialogContent>
             </form>
