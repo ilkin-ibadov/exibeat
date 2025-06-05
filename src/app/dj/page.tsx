@@ -13,13 +13,13 @@ const Dj = () => {
 
   const getTrackList = async () => {
     try {
-      const response = await fetch('https://localhost:3001/api/tracks/dj/review-tracks', {
+      const response = await fetch('http://localhost:3001/api/tracks/dj/review-tracks', {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         }
       });
-      console.log(response)
+      
       if (response.ok) {
         const data = await response.json();
         setTrackList(data);
