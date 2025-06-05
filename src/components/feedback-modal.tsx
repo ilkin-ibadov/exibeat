@@ -33,7 +33,7 @@ const FeedbackModal = (
     const getMessages = async () => {
         setLoading(true)
         try {
-            const response = await fetch(`http://localhost:3000/api/messages/track/${selectedTrack}`, {
+            const response = await fetch(`http://localhost:3001/api/messages/track/${selectedTrack}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -54,7 +54,7 @@ const FeedbackModal = (
     const sendFeedback = async () => {
         if (!feedback.trim()) return;
         try {
-            const response = await fetch('http://localhost:3000/api/messages/feedback', {
+            const response = await fetch('http://localhost:3001/api/messages/feedback', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

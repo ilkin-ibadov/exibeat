@@ -13,7 +13,7 @@ const Dj = () => {
 
   const getTrackList = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/tracks/dj/review-tracks', {
+      const response = await fetch('http://localhost:3001/api/tracks/dj/review-tracks', {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
