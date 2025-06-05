@@ -4,12 +4,55 @@ import React, { useState } from 'react'
 import Image from "next/image";
 import { X } from 'lucide-react';
 import MessageModal from './message-modal';
+// import useChatSocket from '@/hooks/useChatSocket';
 
 const ProducerCard = () => {
+    // const currentUserId = "68408fad86657a62a8769a75";
+    // const trackId = "684097b62f720e1c6899095e"
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NDA4ZmFkODY2NTdhNjJhODc2OWE3NSIsInJvbGUiOiJwcm9kdWNlciIsImlhdCI6MTc0OTA4MzM1MCwiZXhwIjoxNzQ5Njg4MTUwfQ.eUQB8V4Azeor-BuxkalroxVYom2ZPoYpsUy3XWqMOdY"
+    const recipientId = "68408fb886657a62a8769a77";
     const [files, setFiles] = useState<File[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState("")
     const [filesSubmitted, setFilesSubmitted] = useState(false)
+    const [inputDisabled, setInputDisabled] = useState(false)
+    // Hook for real-time chat functionality for next step
+    // const { sendMessage }: ChatSocket = useChatSocket(
+    //     currentUserId,
+    //     (data: ChatMessage) => {
+    //         console.log("Incoming message:", data);
+    //     }
+    // );
+
+    const handleSend = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/api/tracks/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    title: files[0].name,
+                    djId: recipientId,
+                    message: message
+                })
+            })
+
+            if(response.ok){
+                setFilesSubmitted(true);
+            }
+        } catch (error) {
+            console.error("Error sending message:", error);
+            setError("Failed to send message. Please try again.");
+        }
+        // sendMessage({
+        //     to: recipientId,
+        //     from: currentUserId,
+        //     trackId,
+        //     content: message,
+        // });
+    };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setError(null);
@@ -99,10 +142,11 @@ const ProducerCard = () => {
                 <input
                     onClick={() => {
                         if (files.length) {
-                            setFilesSubmitted(true);
+                            setInputDisabled(true);
+                            handleSend()
                         }
                     }}
-                    disabled={filesSubmitted}
+                    disabled={inputDisabled}
                     accept=".mp3,.wav"
                     multiple
                     type="file"

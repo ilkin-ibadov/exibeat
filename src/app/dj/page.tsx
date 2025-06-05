@@ -1,29 +1,48 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Navbar from '@/components/navbar'
 import TracklistItem from '@/components/tracklist-item'
 import React from 'react'
+import { Track } from "@/types/types";
 
 const Dj = () => {
-  const trackList = [{
-    title: "Quantum Drift",
-    artist: "Pens",
-    categories: ["Bass", "130", "Dark, Groovy"],
-    thumbnail: "/quantumDrift.png",
-    id: 1
-  },
-  {
-    title: "Track1",
-    artist: "Ostblock",
-    categories: ["Bass", "130", "Dark, Groovy"],
-    thumbnail: "/track1.png",
-    id: 2
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NDA4ZmI4ODY2NTdhNjJhODc2OWE3NyIsInJvbGUiOiJkaiIsImlhdCI6MTc0OTA2Mzc3MiwiZXhwIjoxNzQ5NjY4NTcyfQ.nzv23jEvOPCctEZgOsxSQcxY-CsE9WY6U-GjJ27ZvoA'
+  const [trackList, setTrackList] = useState<Track[]>([])
+  const [selectedTrack, setSelectedTrack] = useState("")
+
+  const getTrackList = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/tracks/dj/review-tracks', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setTrackList(data);
+      }
+
+    } catch (error) {
+      console.error("Error fetching track list:", error);
+    }
   }
-  ]
+
+  useEffect(() => {
+    getTrackList();
+  }, [])
 
   return (
     <div className='w-full'>
       <Navbar />
       <div className='w-full mt-11 px-32 flex flex-col gap-2.5'>
-        {trackList.map(track => <TracklistItem key={track.id} track={track} />)}
+        {trackList.map(track =>
+          <TracklistItem
+            key={track._id}
+            track={track}
+            selectedTrack={selectedTrack}
+            setSelectedTrack={setSelectedTrack} />)}
       </div>
     </div>
   )

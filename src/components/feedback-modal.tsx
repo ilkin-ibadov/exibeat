@@ -10,38 +10,88 @@ import {
 import { Input } from "@/components/ui/input"
 import Image from "next/image";
 import { CheckCheck } from "lucide-react";
+import { useEffect, useState } from "react";
+import { FeedbackModalProps, Message } from "@/types/types";
 
 const FeedbackModal = (
+    { track, selectedTrack, setSelectedTrack }: FeedbackModalProps
 ) => {
-    const messages = [
-        {
-            body: "Hi! I hope you're well! Would love you to check on thoses tracks for your next gigs <3 Any feedback is super appreciated <3",
-            track: {
-                title: "Quantum Drift",
-                artist: "Pens",
-                categories: ["Bass", "130", "Dark, Groovy"],
-                thumbnail: "/quantumDrift.png",
-                id: 1
-            },
-            type: 'received',
-            timestamp: "2025-06-03T15:30:00Z",
-            read: true
-        },
-        {
-            body: "hey, thank for your message",
-            type: 'sent',
-            timestamp: "2025-06-03T16:00:00Z",
-            read: true,
-        },
-    ]
+    const myId = '68408fb886657a62a8769a77'
+    const [messages, setMessages] = useState<Message[]>([])
+    const [feedback, setFeedback] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(false)
+    const date = messages[0]?.timestamp ? new Date(messages[0]?.timestamp) : null
+    const formattedDayTime = date ? date.toLocaleString([], {
+        weekday: 'long',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+    }) : ''
+
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NDA4ZmI4ODY2NTdhNjJhODc2OWE3NyIsInJvbGUiOiJkaiIsImlhdCI6MTc0OTA2Mzc3MiwiZXhwIjoxNzQ5NjY4NTcyfQ.nzv23jEvOPCctEZgOsxSQcxY-CsE9WY6U-GjJ27ZvoA'
+
+    const getMessages = async () => {
+        setLoading(true)
+        try {
+            const response = await fetch(`http://localhost:3000/api/messages/track/${selectedTrack}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setMessages(data)
+            }
+        } catch (error) {
+            console.error("Error fetching messages:", error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const sendFeedback = async () => {
+        if (!feedback.trim()) return;
+        try {
+            const response = await fetch('http://localhost:3000/api/messages/feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    content: feedback,
+                    trackId: selectedTrack,
+                    recipientId: track.producer._id,
+                })
+            });
+
+            if (response.ok) {
+                setFeedback('');
+                getMessages();
+            } else {
+                console.error("Failed to send feedback");
+            }
+        } catch (error) {
+            console.error("Error sending feedback:", error);
+        }
+    }
+
+    useEffect(() => {
+        if(selectedTrack) getMessages();
+    }, [selectedTrack])
+
 
     return (
         <Dialog>
             <form className="w-full max-w-fit">
                 <DialogTrigger asChild>
-                    <button className='min-w-fit hover:cursor-pointer'>
+                    <button onClick={() => {
+                        setSelectedTrack(track._id)
+                    }} className='min-w-fit hover:cursor-pointer'>
                         <p className='text-xs font-medium leading-4 underline min-w-fit'>Send feedback</p>
-                        <p className='text-[8px] leading-3 min-w-fit text-end'>1 unread message</p>
+                        {track.hasMessage && <p className='text-[8px] leading-3 min-w-fit text-end'>1 unread message</p>}
                     </button>
                 </DialogTrigger>
 
@@ -60,42 +110,55 @@ const FeedbackModal = (
                             priority
                         />
 
-                        <h2 className="font-bold leading-4">Pens</h2>
+                        <h2 className="font-bold leading-4">{track.producer.username}</h2>
                     </div>
 
                     <div className="flex flex-col gap-4 pt-4 pb-12 h-full max-h-[390px] overflow-y-scroll">
-                        <p className="text-xs leading-4 font-bold text-[#6C6C89] text-center">Monday 16:00</p>
-                        {messages.map((message, index) => (
-                            <div key={index} className={`flex items-start gap-2 ${message.type === 'received' ? 'flex-row' : 'flex-row-reverse'}`}>
-                                <div className={`px-2 py-1 rounded-lg ${message.type === 'received' ? 'bg-[#F7F7F8]' : 'bg-[#E9EBFE]'}`}>
-                                    <p className="text-sm leading-5 text-[#121217]">{message.body}</p>
 
-                                    {message.track && (
-                                        <div className="max-w-[60%] mt-1 flex items-center gap-1 py-1 px-2 bg-white border-[1px] border-[#D2D2D2] border-dashed rounded-md">
-                                            <Image
-                                                src={message.track.thumbnail}
-                                                alt={message.track.title}
-                                                width={24}
-                                                height={24}
-                                                priority
-                                            />
-                                            <p className="leading-5 text-sm font-bold">{message.track.title}</p>
+                        {loading ? <p className="text-xs text-center">Loading messages...</p>
+                            :
+                            <>
+                                {formattedDayTime && <p className="text-xs leading-4 font-bold text-[#6C6C89] text-center">{formattedDayTime}</p>}
+                                {
+                                    messages.map((message, index) => (
+                                        <div key={index} className={`flex items-start gap-2 ${message.sender._id !== myId ? 'flex-row' : 'flex-row-reverse'}`}>
+                                            <div className={`px-2 py-1 rounded-lg ${message.sender._id !== myId ? 'bg-[#F7F7F8]' : 'bg-[#E9EBFE]'}`}>
+                                                <p className="text-sm leading-5 text-[#121217]">{message.content}</p>
+
+                                                {message.track && message.sender._id !== myId && (
+                                                    <div className="min-w-fit max-w-[70%] mt-1 flex items-center gap-1 py-1 px-2 bg-white border-[1px] border-[#D2D2D2] border-dashed rounded-md">
+                                                        <Image
+                                                            src='/quantumDrift.png'
+                                                            alt={message.track.title}
+                                                            width={24}
+                                                            height={24}
+                                                            priority
+                                                        />
+                                                        <p className="leading-5 text-sm font-bold min-w-fit">{message.track.title}</p>
+                                                    </div>
+                                                )}
+
+                                                <div className="flex items-end gap-1 justify-end">
+                                                    <p className="text-xs leading-4 text-[#121217] mt-1">{new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</p>
+                                                    <CheckCheck size={14} color={message.read ? "#273AF4" : "#121313"} />
+                                                </div>
+                                            </div>
                                         </div>
-                                    )}
-
-                                    <div className="flex items-end gap-1 justify-end">
-                                        <p className="text-xs leading-4 text-[#121217] mt-1">{new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</p>
-                                        <CheckCheck size={14} color={message.read ? "#273AF4" : "#121313"} />
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                                    ))
+                                }
+                            </>
+                        }
                     </div>
 
                     <div className="flex items-center gap-4 pt-2 border-t-[1px] border-[#F3F3F3]">
-                        <Input placeholder="Write your feedback...." className="py-2 px-4 bg-[#F7F7F8]" id="message" name="message" />
+                        <Input onChange={(e) => {
+                            setFeedback(e.target.value);
+                        }} placeholder="Write your feedback...." className="py-2 px-4 bg-[#F7F7F8]" id="message" name="message" />
 
-                        <button className="bg-[#273AF4] w-fit text-xs text-white leading-4 font-bold py-1 px-8 hover:cursor-pointer rounded-sm" type="submit">Send</button>
+                        <button onClick={(e) => {
+                            e.preventDefault();
+                            sendFeedback();
+                        }} className="bg-[#273AF4] w-fit text-xs text-white leading-4 font-bold py-1 px-8 hover:cursor-pointer rounded-sm">Send</button>
                     </div>
                 </DialogContent>
             </form>
