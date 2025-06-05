@@ -26,7 +26,7 @@ const ProducerCard = () => {
 
     const handleSend = async () => {
         try {
-            const response = await fetch('http://localhost:3001/api/tracks/submit', {
+            const response = await fetch('https://localhost:3001/api/tracks/submit', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
