@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### Exibeat
 
-## Getting Started
+Imagine David, a music producer, and DJ Sam, collaborating through this app.
 
-First, run the development server:
+### David’s Journey (Producer):
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+David starts by registering for the platform. After logging in, he lands on his dashboard where he sees options to submit new tracks.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+David records a fresh beat and decides to share it with DJ Sam. He clicks “Submit Track,” fills in the track title, selects Sam from DJ list, and optionally writes a short message about the vibe or ideas behind the track. Once submitted, David’s track appears in his list of submitted tracks, and a real-time notification quietly pops up in Sams’s side of app — he instantly knows there’s something new to check out.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+David can submit as many tracks as he wants, but for now, he can only add one message for each track, keeping communication clear and focused. This will be replaced with real-time communication between the two sides.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+### Sam’s Journey (DJ):
 
-To learn more about Next.js, take a look at the following resources:
+On the other side, Sam logs in and sees a list of tracks producers have sent him, including David’s latest submission. Clicking on a track reveals all details and messages attached.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Listening carefully, Sam wants to give feedback. He types his thoughts, suggestions, or appreciation, and sends it through the app. His feedback is instantly delivered to David.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+### Real-Time Connection:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+For the next updates we will introduce real-time chat experience. The moment a track is submitted or feedback is sent, their apps will receive instant updates, creating a seamless, live chat experience around each track.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+This flow keeps everyone focused on what matters — making and improving music together, with no delays or missed messages.
