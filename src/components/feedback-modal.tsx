@@ -16,11 +16,11 @@ import { FeedbackModalProps, Message } from "@/types/types";
 const FeedbackModal = (
     { track, selectedTrack, setSelectedTrack }: FeedbackModalProps
 ) => {
-    const myId = '68408fb886657a62a8769a77'
+    const myId = '6843815cc868cd98499897cc'
     const [messages, setMessages] = useState<Message[]>([])
     const [feedback, setFeedback] = useState<string>('')
     const [loading, setLoading] = useState<boolean>(false)
-    const date = messages[0]?.timestamp ? new Date(messages[0]?.timestamp) : null
+    const date = messages[0]?.createdAt ? new Date(messages[0]?.createdAt) : null
     const formattedDayTime = date ? date.toLocaleString([], {
         weekday: 'long',
         hour: '2-digit',
@@ -28,9 +28,10 @@ const FeedbackModal = (
         hour12: false,
     }) : ''
 
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NDA4ZmI4ODY2NTdhNjJhODc2OWE3NyIsInJvbGUiOiJkaiIsImlhdCI6MTc0OTA2Mzc3MiwiZXhwIjoxNzQ5NjY4NTcyfQ.nzv23jEvOPCctEZgOsxSQcxY-CsE9WY6U-GjJ27ZvoA'
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NDM4MTVjYzg2OGNkOTg0OTk4OTdjYyIsInJvbGUiOiJkaiIsImlhdCI6MTc0OTI4NTk0MSwiZXhwIjoxNzQ5ODkwNzQxfQ.ROBLkwwYKHLFhDl0cjBa9qH3vVED4BZ-mN-3b8I4H0Y'
 
     const getMessages = async () => {
+        console.log("Fetching messages for track:", selectedTrack);
         setLoading(true)
         try {
             const response = await fetch(`https://ilkinibadov.com/api/messages/track/${selectedTrack}`, {
@@ -42,6 +43,7 @@ const FeedbackModal = (
 
             if (response.ok) {
                 const data = await response.json();
+                console.log(data)
                 setMessages(data)
             }
         } catch (error) {
@@ -63,7 +65,6 @@ const FeedbackModal = (
                 body: JSON.stringify({
                     content: feedback,
                     trackId: selectedTrack,
-                    recipientId: track.producer._id,
                 })
             });
 
@@ -79,7 +80,7 @@ const FeedbackModal = (
     }
 
     useEffect(() => {
-        if(selectedTrack) getMessages();
+        if (selectedTrack) getMessages();
     }, [selectedTrack])
 
 
@@ -129,7 +130,7 @@ const FeedbackModal = (
                                                     <div className="min-w-fit max-w-[70%] mt-1 flex items-center gap-1 py-1 px-2 bg-white border-[1px] border-[#D2D2D2] border-dashed rounded-md">
                                                         <Image
                                                             src='/quantumDrift.png'
-                                                            alt={message.track.title}
+                                                            alt="quantumDrift"
                                                             width={24}
                                                             height={24}
                                                             priority
@@ -139,7 +140,7 @@ const FeedbackModal = (
                                                 )}
 
                                                 <div className="flex items-end gap-1 justify-end">
-                                                    <p className="text-xs leading-4 text-[#121217] mt-1">{new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</p>
+                                                    <p className="text-xs leading-4 text-[#121217] mt-1">{new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</p>
                                                     <CheckCheck size={14} color={message.read ? "#273AF4" : "#121313"} />
                                                 </div>
                                             </div>

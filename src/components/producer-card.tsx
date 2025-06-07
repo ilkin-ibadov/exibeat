@@ -7,10 +7,8 @@ import MessageModal from './message-modal';
 // import useChatSocket from '@/hooks/useChatSocket';
 
 const ProducerCard = () => {
-    // const currentUserId = "68408fad86657a62a8769a75";
-    // const trackId = "684097b62f720e1c6899095e"
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NDA4ZmFkODY2NTdhNjJhODc2OWE3NSIsInJvbGUiOiJwcm9kdWNlciIsImlhdCI6MTc0OTA4MzM1MCwiZXhwIjoxNzQ5Njg4MTUwfQ.eUQB8V4Azeor-BuxkalroxVYom2ZPoYpsUy3XWqMOdY"
-    const recipientId = "68408fb886657a62a8769a77";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NDM4MTM0Yzg2OGNkOTg0OTk4OTdjYSIsInJvbGUiOiJwcm9kdWNlciIsImlhdCI6MTc0OTI4NTkxNiwiZXhwIjoxNzQ5ODkwNzE2fQ.D-bjW5LpfZ1_wWCHmiLA5g4xwN_PYwiRnbRNHY1Fp0M"
+    const recipientId = "6843815cc868cd98499897cc";
     const [files, setFiles] = useState<File[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState("")
@@ -25,6 +23,7 @@ const ProducerCard = () => {
     // );
 
     const handleSend = async () => {
+        console.log("Submitting track")
         try {
             const response = await fetch('https://ilkinibadov.com/api/tracks/submit', {
                 method: 'POST',

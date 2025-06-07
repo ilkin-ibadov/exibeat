@@ -30,7 +30,7 @@ export interface FeedbackModalProps {
 export interface Message {
     _id: string;
     content: string;
-    timestamp: Date;
+    createdAt: Date;
     track: Track;
     read: boolean;
     sender: User;

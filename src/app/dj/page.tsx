@@ -7,7 +7,7 @@ import React from 'react'
 import { Track } from "@/types/types";
 
 const Dj = () => {
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NDA4ZmI4ODY2NTdhNjJhODc2OWE3NyIsInJvbGUiOiJkaiIsImlhdCI6MTc0OTA2Mzc3MiwiZXhwIjoxNzQ5NjY4NTcyfQ.nzv23jEvOPCctEZgOsxSQcxY-CsE9WY6U-GjJ27ZvoA'
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NDM4MTVjYzg2OGNkOTg0OTk4OTdjYyIsInJvbGUiOiJkaiIsImlhdCI6MTc0OTI4NTk0MSwiZXhwIjoxNzQ5ODkwNzQxfQ.ROBLkwwYKHLFhDl0cjBa9qH3vVED4BZ-mN-3b8I4H0Y'
   const [trackList, setTrackList] = useState<Track[]>([])
   const [selectedTrack, setSelectedTrack] = useState("")
 
